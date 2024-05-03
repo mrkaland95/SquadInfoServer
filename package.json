@@ -1,0 +1,24 @@
+{
+  "name": "infoserver",
+  "version": "0.0.1",
+  "description": "A small web server that retrieves information from a Squad server via RCON, which can then be served to users",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "Squad",
+    "info",
+    "server",
+    "RCON",
+    "web",
+    "server"
+  ],
+  "author": "Steffen Kaland",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}
