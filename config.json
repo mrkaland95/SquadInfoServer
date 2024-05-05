@@ -1,0 +1,7 @@
+{
+  "webServerPort": "",
+  "rconIP": "",
+  "rconPort": "",
+  "rconPassword": "",
+  "updateIntervalSeconds": 30
+}

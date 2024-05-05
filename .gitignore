@@ -1,0 +1,4 @@
+/config-test*.json
+/config-live*.json
+/config-template*.json
+/.idea/

@@ -1,7 +1,7 @@
 {
   "name": "infoserver",
   "version": "0.0.1",
-  "description": "A small web server that retrieves information from a Squad server via RCON, which can then be served to users",
+  "description": "A small web server that useful data from a Squad server via RCON, which can then be served to users via a small web end point.",
   "main": "index.js",
   "scripts": {
     "test": "test"
