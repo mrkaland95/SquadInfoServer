@@ -4,7 +4,7 @@
 
 This program is meant to work as a tiny web API, middleman to retrieve game data about a [Squad](https://store.steampowered.com/app/393380/Squad/) dedicated server, without exposing sensitive secrets such as RCON connection details.
 
-This became necessary as of Squad update 6.0 with the introduction of the EOS(Epic Online Services), which broke direct A2S queries for Squad game servers.
+This became necessary as of Squad update 6.0 with the introduction of the EOS(Epic Online Services), which broke direct Steam Query requests for Squad game servers.
 
 #### Prerequisites
 * Node.js (v20.x) - [Download](https://nodejs.org/en/)

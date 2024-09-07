@@ -29,21 +29,22 @@ class Server {
   }
 
   async getInfo() {
-    console.log('Retrieving info from the server...')
+    console.log('Updating info from the game server...')
     await this.rcon.connect()
     await this.retrieveServerInfo()
     await this.retrievePlayerList()
+    this.serverInfo = await this.retrieveServerInfo()
     this.currentMapData = await this.retrieveCurrentMap()
     this.nextMapData = await this.retrieveNextMap()
+    this.serverInfo.data.currentMapData = this.currentMapData
+    this.serverInfo.data.nextMapData = this.nextMapData
     this.updateTime = new Date(Date.now())
-    this.serverInfo.data.currentMap = this.currentMapData.layer
-    this.serverInfo.data.nextMap = this.nextMapData.layer
     await this.rcon.disconnect()
   }
 
   async retrieveServerInfo() {
     const data = await this.rcon.execute('ShowServerInfo')
-    if (data) { this.serverInfo = { data: JSON.parse(data), timeUpdated: new Date()}}
+    return { data: JSON.parse(data), timeUpdated: new Date()}
   }
 
   async retrievePlayerList() {
@@ -100,20 +101,31 @@ app.get('/api/', async (req, res) => {
 app.get('/api/serverInfo', async (req, res) => {
   const info = server.serverInfo.data
   const updateTime = server.updateTime
+  logRequestSource(req, 'serverInfo')
   // TODO add user agent to logging.
   // console.log(req.headers["user-agent"])
-  const serverInfo = {
-    name: info.ServerName_s,
-    maxPlayers: info.MaxPlayers,
-    currentPlayers: Number(info.PlayerCount_I),
-    currentPlayersInQueue: Number(info.PublicQueue_I),
-    currentVIPsInQueue: Number(info.ReservedQueue_I),
-    gameMode: info.GameMode_s,
-    currentMap: info.currentMap,
-    nextMap: info.nextMap,
-    updateTime: updateTime
+  try {
+    const serverInfo = {
+      name: info.ServerName_s,
+      maxPlayers: Number(info.MaxPlayers),
+      reserveSlots: Number(info.PlayerReserveCount_I),
+      currentPlayers: Number(info.PlayerCount_I),
+      currentPlayersInQueue: Number(info.PublicQueue_I),
+      currentVIPsInQueue: Number(info.ReservedQueue_I),
+      gameMode: info.GameMode_s,
+      currentMap: info.currentMapData.layer,
+      currentFactions: info.currentMapData.factions,
+      nextMap: info.nextMapData.layer,
+      nextFactions: info.nextMapData.factions,
+      isLicensedServer: Boolean(info.LICENSEDSERVER_b),
+      updateTime: updateTime
+    }
+    res.json(serverInfo)
+  } catch (e) {
+    console.log('Error occured when attempting to send server info: ')
+    console.log(e)
   }
-  res.json(serverInfo)
+
 })
 
 
