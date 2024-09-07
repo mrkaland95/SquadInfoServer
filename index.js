@@ -33,12 +33,13 @@ class Server {
     await this.rcon.connect()
     await this.retrieveServerInfo()
     await this.retrievePlayerList()
-    this.serverInfo = await this.retrieveServerInfo()
     this.currentMapData = await this.retrieveCurrentMap()
     this.nextMapData = await this.retrieveNextMap()
-    this.serverInfo.data.currentMapData = this.currentMapData
-    this.serverInfo.data.nextMapData = this.nextMapData
+    let serverInfo = await this.retrieveServerInfo()
+    serverInfo.data.currentMapData = this.currentMapData
+    serverInfo.data.nextMapData = this.nextMapData
     this.updateTime = new Date(Date.now())
+    this.serverInfo = serverInfo
     await this.rcon.disconnect()
   }
 
